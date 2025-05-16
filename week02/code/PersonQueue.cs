@@ -13,13 +13,20 @@ public class PersonQueue
     /// <param name="person">The person to add</param>
     public void Enqueue(Person person)
     {
-        _queue.Insert(0, person);
+        _queue.Add(person);
     }
 
     public Person Dequeue()
     {
-        var person = _queue[0];
-        _queue.RemoveAt(0);
+        if (IsEmpty())
+            throw new InvalidOperationException("Cannot dequeue from an empty queue.");
+
+        int maxTurns = _queue.Max(p => p.Turns);
+        int index = _queue.FindIndex(p => p.Turns == maxTurns);
+
+        Person person = _queue[index];
+        _queue.RemoveAt(index);
+
         return person;
     }
 
